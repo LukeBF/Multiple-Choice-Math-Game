@@ -69,90 +69,100 @@ function main()
     const playerAge = parseInt(prompt("Please enter your age: "));
     
     //DETERMINE IF PLAYER IS OLD ENOUGH TO CONTINUE
-    if(playerAge >= 8 || playerAge <= 11)
+    if(playerAge >= 8 && playerAge <= 11)
     {
         console.log(`\nHi, ${playerName}, welcome to the game`)
     }
-   
     
     do
     {
-      console.log(`\nLevel: ${gameLevel}, Lives Left: ${playerChances}, Correct Answers: ${correctAnswers}\n`)
+        if(isNaN(playerAge))
+        {
+          console.log(`\nSorry, ${playerName}, you must enter a valid age.`);
+          break;
+        }
+        else if(playerAge < 8 || playerAge > 11)
+        {
+          console.log(`\nSorry, ${playerName}, you not meet the age requirements to play.`);
+          break;
+        }
+        
+        console.log(`\nLevel: ${gameLevel}, Lives Left: ${playerChances}, Correct Answers: ${correctAnswers}\n`)
 
-      //CHANGE THE OPERATOR DEPENDING ON THE QUESTION ROUND
-      let number, displayOperator, questions;
+        //CHANGE THE OPERATOR DEPENDING ON THE QUESTION ROUND
+        let number, displayOperator, questions;
       
-      if(gameLevel <= 4)
-      {
-          number = getQuestionValues("add")
-          displayOperator = "+"
-      }
-      else if(gameLevel > 4 && gameLevel <= 8)
-      {
-          number = getQuestionValues("minus")
-          displayOperator = "-"
-      }
-      else
-      {
-          number = getQuestionValues("divide")
-          displayOperator = "/"
-      }
-
-      /**
-       * RANDOMLY GENERATE A NUMBER TO CHANGE THE MULTIPLE 
-       * CHOICE OPTION FOR THE CORRECT ANSWER
-       */
-      const randomNum3 = Math.floor(Math.random() * 2) + 1;
-
-      if(randomNum3 === 1)
-      {
-          questions = prompt(`Enter the letter that represents the correct answer for ${number[0]} ${displayOperator} ${number[1]}
-          A: ${number[2]}
-          B: ${number[3]}
-          Your Answer: `)
-
-          if(questions == "A" || questions == "a")
-          {
-            gameLevel ++;
-            correctAnswers ++;
-          }
-          else
-          {
-            gameLevel ++;
-            playerChances --;
-          }
+        if(gameLevel <= 4)
+        {
+            number = getQuestionValues("add")
+            displayOperator = "+"
+        }
+        else if(gameLevel > 4 && gameLevel <= 8)
+        {
+            number = getQuestionValues("minus")
+            displayOperator = "-"
         }
         else
         {
-          questions = prompt(`Enter the letter that represents the correct answer for ${number[0]} ${displayOperator} ${number[1]}
-          A: ${number[3]}
-          B: ${number[2]}
-          Your Answer: `)
-          
-          //CHECK THE ANSWERS AND UPDATE PROGRESS STATS
-            if(questions == "B" || questions == "b")
-          {
-            gameLevel ++;
-            correctAnswers ++;
-          }
-          else
-          {
-            gameLevel ++;
-            playerChances --;
-          }
+            number = getQuestionValues("divide")
+            displayOperator = "/"
         }
 
-        //BREAK OUT OF THE GAME IF EITHER OF THESE CONDITIONS ARE TRUE 
-        if(playerChances <= 0)
+        /**
+         * RANDOMLY GENERATE A NUMBER TO CHANGE THE MULTIPLE 
+         * CHOICE OPTION FOR THE CORRECT ANSWER
+         */
+        const randomNum3 = Math.floor(Math.random() * 2) + 1;
+
+        if(randomNum3 === 1)
         {
+            questions = prompt(`Enter the letter that represents the correct answer for ${number[0]} ${displayOperator} ${number[1]}
+            A: ${number[2]}
+            B: ${number[3]}
+            Your Answer: `)
+
+            if(questions == "A" || questions == "a")
+            {
+              gameLevel ++;
+              correctAnswers ++;
+            }
+            else
+            {
+              gameLevel ++;
+              playerChances --;
+            }
+        }
+        else
+        {
+            questions = prompt(`Enter the letter that represents the correct answer for ${number[0]} ${displayOperator} ${number[1]}
+            A: ${number[3]}
+            B: ${number[2]}
+            Your Answer: `)
+            
+            //CHECK THE ANSWERS AND UPDATE PROGRESS STATS
+            if(questions == "B" || questions == "b")
+            {
+              gameLevel ++;
+              correctAnswers ++;
+            }
+            else
+            {
+              gameLevel ++;
+              playerChances --;
+            }
+        }
+
+          //BREAK OUT OF THE GAME IF EITHER OF THESE CONDITIONS ARE TRUE 
+          if(playerChances <= 0)
+          {
             console.log(`Sorry, ${playerName}, you're out of chances.
             PLEASE TRY AGAIN!`)
-            break;
-        }
-        else if(correctAnswers >= 10)
-        {
-          console.log(`CONGRATULATIONS, ${playerName}. You conquered all the levels in this math game.`)
-        }
+              break;
+          }
+          else if(correctAnswers >= 10)
+          {
+            console.log(`CONGRATULATIONS, ${playerName}. You conquered all the levels in this math game.`)
+          }
     }while(playerChances > 0 || correctAnswers < 10)
 
 
